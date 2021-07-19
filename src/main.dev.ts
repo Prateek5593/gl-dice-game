@@ -11,10 +11,16 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+
+const config = require('dotenv').config();
+
+ipcMain.on('get-env', (event) => {
+  event.sender.send('get-env-reply', config);
+});
 
 export default class AppUpdater {
   constructor() {
